@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <title>invoice</title>
+
+    <style>
+        body {
+            padding:-5px 0px 0px -5px;
+            margin:-38px 0px 20px -5px;
+            font-family:"DengXian",Arial,sans-serif;
+            font-weight:bold;
+            /* background-color: aquamarine; */
+
+        }
+
+        .stamp{
+
+            height:220px;
+            font-size:13px;
+            line-height:150%;
+            position:relative;
+        }
+        p{
+            font-family:Arial, sans-serif;
+            font-weight:50px;
+            margin:0px;
+            text-align-last: justify;
+            text-justify: distribute-all-lines;
+        }
+        .invoice-header{
+            position:relative;
+            height:58px;
+            /* background-color: aquamarine; */
+            margin-top:15px;
+      
+        }
+        .fgi-img{
+            position:absolute;
+            float:left;
+            width:625px;
+            height:47px;
+            top:12px;
+            left:0px;
+          
+        }
+.address-info{
+            width:190px;
+            height:37px;
+            position:absolute;
+         
+            top:15px;
+            right:0px;
+            font-weight:lighter;
+        }
+.invoice-footer{
+            margin-top:20px;
+            text-align: center;
+        }
+.info{
+
+            height:55px;
+
+        }
+  .cus-info{
+
+            width:350px;
+            float:left;
+            padding:0px;
+            font-size:10px;
+
+        }
+  .cus-info table{
+            margin:0px;
+            height:20px;
+        }
+ .td-style{
+            width:100px;
+            padding:0px;
+            margin:0px;
+            height:10px;
+            line-height:110%;
+        }
+.describe{
+
+            height:200px;
+
+            font-size:13px;
+        }
+          .describe tr{
+            top:0px;
+            width:300px;
+            text-align:justify;
+            line-height:90%;
+
+        }
+          .stamp img{
+            position:absolute;
+
+        }
+            .future-log{
+
+            float:right;
+            position:relative;
+            height:55px;
+            bottom:0px;
+        }
+          .future-log img{
+            position:absolute;
+            right:0px;
+            bottom:3px;
+        }
+          .total_amount
+        {
+            text-align:right;
+            font-size:13px;
+        }
+         .formatted-number-container{
+            display:inline-block;
+            position: relative;
+            /* background-color: #d6d6d6; */
+            border-bottom: 2px solid black;
+            font-weight:bolder;
+        }
+        .formatted-number-container::before
+        {
+            content: " ";
+            display: inline-block;
+            width: 25px;
+        }
+        .formatted-img-container{
+            display:inline-block;
+            position: relative;
+            border-bottom: 1px solid black;
+        }
+        .formatted-img-container::after,
+        .formatted-img-container::before
+        {
+            content: " ";
+            display: inline-block;
+            width: 40px;
+        }
+        .paymentmethods
+        {
+
+            height:230px;
+
+        }
+        .paymentmethods span
+        {
+            font-size:11px;
+
+            border-bottom:1px solid black;
+        }
+        .paymentmethods table
+        {
+            border:1px solid black;
+
+            font-size:10px;
+        }
+        .paymentmethods td
+        {
+            padding:0px;
+            line-height:110%;
+        }
+          .footer{
+
+            height:200px;
+            width:625px;
+            line-height:90%;
+        }
+
+         .footer-sig
+        {
+
+            width:220px;
+            float: left;
+            font-weight:bold;
+        }
+        .footer-stamp
+        {
+
+            width:400px;
+            float:right;
+            margin-top:15px;
+        }
+         .method{
+            padding-top: 30px;
+            height:230px;
+            font-size:10px;
+        }
+        .method_1
+        {
+            border:1px solid black;
+            width:300px;
+            height:230px;
+            float:left;
+            /* background-color: aqua; */
+        }
+        .method_2
+        {
+            border:1px solid black;
+            width:285px;
+            height:290px;
+            float:right;
+        }
+        .or{
+            height:300px;
+            margin-left:20px;
+            margin-right:5px;
+            float:left;
+        }
+        .pay_m1_td1
+        {
+            font-weight:normal;
+            width:5px;
+        }
+        /* .pay_m1_td2
+        {
+            font-weight:normal;
+            width:10px;
+        } */
+        .pay_m1_td2
+        {
+            width: 100px;
+            font-weight:normal;
+            /* background-color: bisque; */
+        }
+        .title{
+
+            height:77px;
+            font-weight:bold;
+            letter-spacing:0.5px;
+            font-size:24px;
+            text-align:center;
+        }
+         .title span{
+            vertical-align:middle;
+            display: inline-block;
+            line-height:77px;
+
+        }
+
+
+
+        .table-header{
+            border-top:2px solid black;
+            border-bottom: 2px solid black;
+            font-size:12px;
+            line-height:90%;
+        }
+        .table-header_1{
+            border-top:1px solid black;
+            border-bottom: 1px solid black;
+            font-size:12px;
+            line-height:90%;
+        }
+        .des-content{
+            margin:30px 0px 0px 0px;
+            border:1px solid black;
+            padding-top:12px;
+            padding-bottom:12px;
+            font-size:13px;
+            /* font-size: 28pt; */
+            /* line-height:100%; */
+            /* background-color: rgb(99, 116, 209); */
+        }
+        .detail_fee{
+            font-size:11px;   
+        }
+            .des-content_1{
+            margin:30px 0px 0px 0px;
+            border:1px solid black;
+            padding-bottom:40px;
+            font-size:13px;
+            line-height:90%;
+        }
+        .detail_content{
+            padding-left:30px;
+        }
+
+        .note{
+            font-size:11px;
+            text-align:left;
+            /* height: 290px; */
+            padding-top: 30px;
+            /* background-color: deeppink; */
+            position:relative
+        }
+        .note p{
+            font-size:11px;
+            line-height: 1.5;
+            text-align:left !important;
+            
+        }
+
+
+
+
+    </style>
+</head>
+
+<body>
+    <!--插入公司logo图片-->
+    <div class="invoice-header">
+        <div class = "fgi-img">
+            <img src="file:\D:\\File\\work\\20250507InvoiceToEmail\\3. Project\\Static\\img\\orui_logo.png" alt="orui_logo" style='width:110px'>
+        </div>
+        <div class = 'address-info'>
+            <p style="font-size: 7px;margin-top:0px;word-spacing: 1px; letter-spacing:0.8px;text-align:justify;">China Overseas Enterprise Consulting Limited</p>
+            <p style="font-size: 6.5px;margin-top:0px;word-spacing: 1.3px;letter-spacing:3px;text-align:justify;">Room 3601, 36/F Lippo Centre</p>
+            <p style="font-size: 6.5px;margin-top:0px;word-spacing: 2px;letter-spacing:4px;text-align:justify;">Tower Two, 89 Queensway,</p>
+            <p style="font-size: 6.5px;margin-top:0px;word-spacing: 2px;letter-spacing:4px;text-align:left;"> Hong Kong</p>
+            <p style="font-size: 6px;margin-top:0px;word-spacing: 3px;letter-spacing:1px;text-align:justify;">Email:<span style="border-bottom:1px solid black;">invoice@oechk.com</span> </p> 
+        </div>
+    </div>
+
+    <div class="title">
+        <span >支付单INVOICE</span>
+    </div>
+
+    <div class = "info">
+        <div class = "cus-info">
+            <table>
+            <tr><td class='td-style'>致:</td><td style="width:150px;" class='td-style'> {{ customer_name }}</td></tr>
+            <tr><td class='td-style'>发票号码: </td><td style="width:150px;" class='td-style'>{{ invoice_number }}</td></tr>
+            <tr><td class='td-style'>发票日期:</td><td style="width:150px;" class='td-style'> {{ invoice_date }}</td></tr>
+            </table>
+        </div>
+
+    </div>
+
+    <div >
+        <div class='table-header_1'>
+            <table style="width:640px;font-weight:normal;">
+            <tr><th style="text-align:left">付费项目</th>
+            <th style="text-align:right;">金额(欧元)</th></tr>
+            </table>
+        </div>
+
+        
+        <div class='des-content'>
+            <table style="width:640px;">
+            {% if tax_rep_fee !=0 %}
+            <tr style = "text-align: left;font-weight:bold;">
+                <td colspan="3">
+                    支付"Futuroprotagonista,S.A / Falcon Dialogue Lda"作为客户税务代表费用<sup style = 'font-size: 11px;'>1,2</sup>
+                </td>
+            </tr>
+            {% for item in tax_rep_content %}
+            <tr class="detail_fee">
+                
+                    <td class="detail_content">
+                        {{ item[0] }}
+                    </td>
+                    <td>每年欧元</td>
+                    <td style="text-align:right"> {{ item[1] }}</td>
+                
+            </tr>
+            {% endfor %}
+            <tr ><td colspan="3"></td></tr>
+            {% endif %}
+
+            {% if condo_fee != 0 or qbe_fee != 0 or  imi_fee != 0 or  irs_fee != 0 %}
+            <tr style = "text-align: left;font-weight:bold;">
+                <td colspan="3">
+                    支付代缴葡萄牙政府/官方费用明细***
+                </td>
+            </tr>
+            <!-- 物業管理費用 -->
+            {% if condo_fee %}
+            <tr class="detail_fee">
+                <td class="detail_content">
+                    物业管理费用：由2025年1月1日至2025年12月31日,共12个月<sup>3</sup>
+                </td>
+                <td>每年欧元</td><td style="text-align:right"> {{ condo_fee }}</td>
+            </tr>
+            {% endif %}
+            <!-- 物業保險費用 -->
+            {% if qbe_fee %}
+            <tr class="detail_fee">
+                <td class="detail_content">
+                    物业保险: QBE Ap 005-10523-20000285/00<sup>4</sup>
+                </td>
+                <td>每年欧元</td><td style="text-align:right"> {{ qbe_fee }}</td>
+            </tr>
+            {% endif %}
+            <!-- IMI2024 -->
+            {% if imi_fee %}
+            <tr class="detail_fee">
+                <td class="detail_content">
+                    IMI 财产(房产)持有税 2024 (Property Tax)<sup>5</sup>
+                </td>
+                <td></td><td style="text-align:right"> {{ imi_fee }}</td>
+            </tr>
+            {% endif %}
+            <!--IRS 2024 -->
+            {% if irs_fee %}
+            <tr class="detail_fee">
+               
+                <td class="detail_content">
+                    IRS 个人所得税 2024 (Personal Income Tax )<sup>2</sup>
+                </td>
+                <td></td><td style="text-align:right"> {{ irs_fee }}</td>
+            </tr>
+            {% endif %}
+                     
+
+            {% if (condo_fee or imi_fee or irs_fee or qbe_fee) and invoice_cus_address !='' %}
+            <tr style = "text-align: left;font-weight:150px;font-size: 10px; ">
+                <td colspan="3">
+                    (物业: {{ invoice_cus_address }})
+                </td>
+            </tr>
+            {% endif %}
+            <tr ><td colspan="3"></td></tr>
+            {% endif %}
+
+         {% if other_fee !=0 %}
+            <tr style = "text-align: left;font-weight:bold;">
+                <td colspan="3">
+                    其他费用
+                </td>
+            </tr>
+            <tr class="detail_fee">
+                    <td class="detail_content">
+                        {{ note }}
+                    </td>
+                    <td></td>
+                    <td style="text-align:right"> {{ other_fee }}</td>
+                
+            </tr>
+            <tr ><td colspan="3"></td></tr>
+            {% endif %}
+        </table>
+        </div>
+
+        <div class = "total_amount">
+            <table>
+                <tr><td style="text-align:right;width:600px;"></td>
+                    <td style="text-align:right;width:200px;font-size:13px;">应付总额(欧元)</td>
+                    <td class='formatted-number-container' style="border-bottom:3px double black;width:130px; " >{{eur_amount}}</td></tr>
+                {% if hkd_amount != 0 %}
+                <tr style="font-size:9px;"><td></td>
+                    <td style="text-align:right;width:200px; ">港币兑换汇率</td>
+                    <td  style="border-bottom:1px solid black;width:130px; ">{{hk_er}}</td></tr>
+                <tr><td style="text-align:right;width:600px;">或    </td>
+                    <td style="text-align:right;width:200px;font-size:13px;">应付总额(港币)</td>
+                    <td class='formatted-number-container' style="border-bottom:1px solid black;width:130px;" >{{hkd_amount}}</td></tr>
+                {% endif %}
+                {%if cny_amount != 0 %}
+                <tr style="font-size:9px;"><td></td>
+                    <td style="text-align:right;width:200px;">人民币兑换汇率</td>
+                    <td style="border-bottom:1px solid black; width:130px;">{{rmb_er}}</td></tr>
+                <tr ><td style="text-align:right;width:600px;">或 </td>
+                    <td style="text-align:right;width:200px;font-size:13px;">应付总额(人民币)</td>
+                    <td class='formatted-number-container' style="border-bottom:1px solid black;width:130px;" >{{cny_amount}}</td></tr>
+                {% endif %}
+            </table>
+        </div>
+    </div>
+    <div class = "note">
+        <p>***备注 </p>
+        <p>尊敬的客户 Dear Customers：</p>
+        <p>1. 请于收到本支付单之日起7个自然日内完成全额支付，及时支付至关重要。</p>
+        <!-- <p>2. 税务代表(Tax Representative)为年度固定费用，用于维护个人税务申报及服务运作，确保黄金签证申请中的税务合规性。</p> -->
+        <!-- <p>3. #物业管理费用依物业管理方(Condominium)实际执行，如年度费用发生浮动，将按实际金额多退少补。</p> -->
+        <!-- <p>4. #保险费须于 2025 年 6 月 15 日前全额支付，以免延误承保。根据葡萄牙法律 Artigo°1429，房产保险为必需项，至少需购买火灾险；若业主未自行投保，物业有权强制购买。</p> -->
+        <!-- <p>5. #IMI房产持有税 2024 Municipal Property Tax (IMI)一​般政府通知期2025年4月至5月，今年最终支付截止日：2025年7月31日，支付方式：可通过葡萄牙网银输入附件的2024 IMI税单上的"Referência Pagamento"直接全款缴纳。</p> -->
+        <p>2. IRS 个人所得税 2024 (Personal Income Tax ): </br>
+            通知期: 一般为当年度8月，按《个人所得税法》（Código do IRS）履行年度申报义务。</br>
+            最终支付截止日: 2025年9月1日。</br>
+            支付方式: 可通过葡萄牙网银输入附件的2024 IRS税单上的"Referência Pagamento"直接全款缴纳。</p>
+        
+        <p style = 'font-weight: normal;'>***Notes</p>
+        <p style = 'font-weight: normal;'>1. Please complete full payment within ​​7 natural days​​ from the date of receiving this payment notice. Timely payment is critical.</p>
+        <!-- <p style = 'font-weight: normal;'>2. ​Tax Representative​​ (annual fee) covers the maintenance of personal tax declarations and service operations to ensure tax compliance in the Golden Visa application.</p>
+        <p style = 'font-weight: normal;'>3. #Condominium Fees​​ are subject to the management’s actual charges. If annual fees fluctuate, adjustments (refunds or additional payments) will be made based on the final amount.</p>
+        <p style = 'font-weight: normal;'>4. ​​#Insurance Premium​​ must be paid in full by ​​June 15, 2025​​ to avoid delays in coverage. Under Portuguese Law (Artigo 1429), property insurance (at minimum fire insurance) is mandatory. If the owner fails to purchase insurance, the property management may enforce coverage.</p>
+        <p style = 'font-weight: normal;'>5. ​#IMI Property Tax 2024​​ Municipal Property Tax (IMI). Government notification period: April–May 2025. Final payment deadline for 2024: ​​July 31, 2025​​. Payment method: Use the "Referência Pagamento" on the attached 2024 IMI tax document to pay in full via Portuguese online banking.</p> -->
+        <p style = 'font-weight: normal;'>2. ​​IRS Personal Income Tax 2024​​ (Personal Income Tax). </br>
+            Notification period: typically falls in August of the tax year. Annual declaration obligations must be fulfilled under the Personal Income Tax Law (Código do IRS).</br>
+            Final payment deadline: September 1, 2025. </br>
+            Payment method: Use the "Referência Pagamento" on the attached 2024 IRS tax document to pay in full via Portuguese online banking.</p> 
+       
+    </div>
+
+    <div class="method">
+          <div class="method_1">
+            <table style = "width :300px">
+                <tr><td colspan="2" style="font-weight:bold;font-size:12px;margin-bottom:5px;border-bottom: 1px solid black;">收款銀行及賬戶如下 ：(支付歐元或港幣或人民幣)</td></tr>
+                <tr><td class="pay_m1_td1" style="font-weight:bold;margin-top:8px;">(i). 銀行轉賬</td><td class="pay_m1_td2"></td></tr>
+                <tr><td class="pay_m1_td1">Bank Name<br>(銀行名稱):</td><td class="pay_m1_td2">DBS Bank (Hong Kong) Limited<br>星展銀行(香港)有限公司</td></tr>
+                <tr><td class="pay_m1_td1">Bank Address<br>(銀行地址):</td><td class="pay_m1_td2">17/F, The Center, 99 Queen’s Road Central, <br>Central, Hong Kong</td></tr>
+                <tr><td class="pay_m1_td1">Bank Code<br>(銀行代碼):</td><td class="pay_m1_td2">016</td></tr>
+                <tr><td class="pay_m1_td1">Swift code<br>(SWIFT編號):</td><td class="pay_m1_td2">DHBKHKHH 或 DHBKHKHHXXX</td></tr>
+                <tr><td class="pay_m1_td1">Account Name<br>(賬戶名稱): </td><td class="pay_m1_td2">China Overseas Enterprise Consulting Limited</td></tr>
+                <tr><td class="pay_m1_td1">Benef Address<br>(收款人地址):</td><td class="pay_m1_td2">Room 3601, 36/F Lippo Centre, Tower Two,  89 <br> Queensway, Hong Kong</td></tr>
+                <tr><td class="pay_m1_td1">Account No<br>(賬戶號碼):</td><td class="pay_m1_td2">475 734 877（多币种Multi-currency）</td></tr>
+                <!-- <tr style="height:20px;padding:1px;"><td></td><td></td></tr>
+                <tr><td colspan="2" style="font-weight:bold;">(ii) 支票:以劃線支票, 抬頭寫上 < FGI Group (HK) Company Limited > </td></tr>
+                <tr style="height:20px;padding:1px;"><td></td><td></td></tr>
+                <tr><td colspan="2" style="font-weight:bold;">(iii) FPS轉數快識別代號 "852-92020552" (港幣)</td></tr> -->
+            </table>
+          </div>
+   
+          <!-- <div class="or">或</div>
+  
+            <div class="method_2">
+                <table style=" width:280px;font-weight:normal ">
+                    <tr><td colspan="2" style="font-weight:bold;font-size:12px;border-bottom: 1px solid black;">收款银行及账户如下 (国内)：(支付人民币)</td></tr>
+                    <tr ><td style="font-weight:bold; width:100px; margin-top:8px" >(i) 法人个人户口</td><td  style="padding-top:8px;"></td></tr>
+                    <tr ><td  style="padding-top:4px;">户名：</td><td style="padding-top:4px;">吴铭棋</td></tr>
+                    <tr><td  style="padding-top:4px;">开户银行:</td><td style="padding-top:4px;">宁波银行（深圳分行）</td></tr>
+                    <tr ><td style="padding-top:4px;">银行账号:</td><td style="padding-top:4px;">621418 000202 2801889</td></tr>
+                    <tr style="height:10px"><td ></td><td ></td></tr>
+                    <tr><td colspan="2" style="font-weight:bold; ">(ii)  或扫描以下二维码，以支付宝支付</td></tr>
+                    <tr><td colspan="2" style = 'text-align: center;vertical-align: middle; padding-top: 10px;'><img src="file:/D:/File/work/20250507InvoiceToEmail/3. Project/img/zfb.png"    alt="zfb_pay"  style='width:100px;'></td>
+                     <tr>
+                </table>
+                    
+            </div> -->
+
+      </div>
+
+      
+
+
+</body>
+</html>
+
+</body>
+</html>
+
+
+
