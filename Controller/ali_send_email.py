@@ -9,8 +9,10 @@ from datetime import datetime
 from email.message import EmailMessage
 from pathlib import Path
 from jinja2 import Environment,FileSystemLoader
+import re
+import logging
 
-
+logger = logging.getLogger(f"app.{__name__}")
 
 # send_file_content包含  'file_bytes'，['maintype'] ['subtype'] ['filename']
 def ali_send_email(email_content:dict,email_subject,files:dict,emailinfo:dict):
@@ -39,9 +41,9 @@ def ali_send_email(email_content:dict,email_subject,files:dict,emailinfo:dict):
     
     
     # 生产环境
-    to_email = emailinfo.get('to_email',[])         
-    bcc_email = emailinfo.get('bcc_email',[])
-    cc_email = emailinfo.get('cc_emial',['fgi.cs@fgi-holdings.com'])
+    to_email = normalize_emails(emailinfo.get('to_email',[]))         
+    bcc_email = normalize_emails(emailinfo.get('bcc_email',[]))
+    cc_email = normalize_emails(emailinfo.get('cc_email',['fgi.cs@fgi-holdings.com']))
     
     # 测试环境
     # to_email = ['lixin_2@163.com']   #  测试
@@ -58,7 +60,7 @@ def ali_send_email(email_content:dict,email_subject,files:dict,emailinfo:dict):
     cc = ','.join(cc_email)  #抄送    # 更改
     bcc = ','.join(bcc_email)  #密送
     print(f'to-{to}')
-    receivers = to_email +cc_email + bcc_email
+    receivers = list(set(to_email,cc_email,bcc_email))
   
     
 
@@ -67,7 +69,7 @@ def ali_send_email(email_content:dict,email_subject,files:dict,emailinfo:dict):
     msg['From'] = From
     msg['To'] = to
     msg['Cc'] = cc
-    msg['Bcc'] = bcc
+    # msg['Bcc'] = bcc    真正送达的的receivers，Bcc前端不显示
     msg['Message-id'] = email.utils.make_msgid()
     msg['Date'] = email.utils.formatdate()   
                       # 主题
@@ -107,7 +109,7 @@ def ali_send_email(email_content:dict,email_subject,files:dict,emailinfo:dict):
 			subtype = value['subtype'],
 			filename = value['filename']
         )
-
+    logger.info('SMTP 实际投递 receipients:',receivers)
 
     '''开始链接验证服务'''
     try:
@@ -150,6 +152,23 @@ def ali_send_email(email_content:dict,email_subject,files:dict,emailinfo:dict):
     except Exception as e:
         return f'邮件发送异常, , {str(e)}'
 
+def normalize_emails(emails):
+    if not emails:
+        return []
+    result = []
+    for e in emails:
+        if not e:
+            continue
+        e = str(e).strip()
+        if not e:
+            continue
+        # 支持 ; / 中文逗号
+        parts = re.split(r'[;,/，]', e)
+        for p in parts:
+            p = p.strip()
+            if p:
+                result.append(p)
+    return result
 
 # 弃用
 def ali_email_content(template,cus_data):

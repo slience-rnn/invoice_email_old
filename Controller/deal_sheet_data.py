@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 
 
-def deal_sheet_data(raw_data,header,name=None):
+def deal_sheet_data(raw_data,header,start,name=None):
     first_column_name = ' Client No.'
     engnaem_column_name = 'Last Name (Eng)'
     columns_num = 0
@@ -16,7 +16,7 @@ def deal_sheet_data(raw_data,header,name=None):
         #print(f'开始处理原始数据{raw_data}')
         # 将所有的行从3开始加一个数字
         if name == 'summSheet':
-            df_data['location'] = ['SummSheet!B'+ str(i+3) for i in df_data.index]
+            df_data['location'] = ['SummSheet!B'+ str(i+start) for i in df_data.index]
             
         df_data = df_data[~df_data[first_column_name].isin(['',' '])]     # 逐个元素去判断
         df_data = df_data[~df_data['Last Name (Eng)'].isin(['Withdraw','',' '])]

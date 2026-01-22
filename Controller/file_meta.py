@@ -52,9 +52,11 @@ def get_file_meta(fee_data,cus_data,cus_no,year,type:str = 'invoice',num:int=0, 
         'irs_fee':0,
         'is_other_fee':False,
         'other_fee':0,  
+        # 'other_fee_detail':'',
         'email': [],  
         'qb_email':[], 
         'cs_email':[],
+        'fgi_email':[], # 包括销售同事以及客服同事
         'is_email':False,  
         'NIF': cus_data['MA NIF'],
         'invoice_cus_address' : '',
@@ -80,9 +82,11 @@ def get_file_meta(fee_data,cus_data,cus_no,year,type:str = 'invoice',num:int=0, 
     if cus_data.get('换税务代表FALCON',None):
         file_meta_simple['is_tax_rep_change'] = True
     
-    if cus_data.get('非里斯本律师费',None):
+    note = fee_data.get('INVOICE ADD-ON REMARKS\n[支付单增加备注]','')
+    
+    if 'Non-Lisbon Biometrics Service Surcharge'.lower().replace(' ','') in note.lower().replace(' ',''):
         file_meta_simple['is_not_lisbon_lawyer'] = True
-        file_meta_simple['is_not_lisbon_lawyer_fee'] = cus_data.get('非里斯本律师费')
+        # file_meta_simple['is_not_lisbon_lawyer_fee'] = cus_data.get('非里斯本律师费')
 
 
     '''
@@ -104,6 +108,12 @@ def get_file_meta(fee_data,cus_data,cus_no,year,type:str = 'invoice',num:int=0, 
         if match:
             invoice_date = match.group('invoice_date')
     file_meta_simple['tax_rep_fee'],file_meta_simple['is_tax_rep'] = judge_fee(fee_data,type,'tax rep fee',invoice_date = invoice_date)
+    if file_meta_simple['tax_rep_fee']< 500:
+        file_meta_simple['tax_rep_fee'] = 0
+        file_meta_simple['is_tax_rep'] = False
+
+
+
     file_meta_simple['condo_fee'],file_meta_simple['is_condo'] = judge_fee(fee_data,type,'condo fee',invoice_date = invoice_date)
     file_meta_simple['qbe_fee'],file_meta_simple['is_qbe'] = judge_fee(fee_data,type,'qbe',invoice_date = invoice_date)
     file_meta_simple['imi_fee'],file_meta_simple['is_imi'] = judge_fee(fee_data,type,'imi',invoice_date = invoice_date)
@@ -119,9 +129,16 @@ def get_file_meta(fee_data,cus_data,cus_no,year,type:str = 'invoice',num:int=0, 
     file_meta_simple['amount_eur'] = amount_eur    # 系统计算的客户应支付金额
     # print('*****************************')
     #print(file_meta_simple)
-    if amount_eur == 0:
+
+    # 不需要支付，也不需要填写指模
+    if amount_eur == 0:  # and (not file_meta_simple['is_form']):
         file_meta_simple['is_email']  = False
         return None
+    
+    # # 不需要支付，但需要填写指纹填写模块
+    # if amount_eur == 0 and (file_meta_simple['is_form']):
+    #     file_meta_simple['is_email']  = True
+    #     # return None
 
     # 计算客户的invoice以及receipt所需要填写的内容
     if house_amount:
@@ -349,11 +366,11 @@ def get_email_info(cus_data):
     返回值：
     is_email:bool   
     cus_email_processed:list 需要to的邮箱
-    qd_email_processed:list 需要bcc 的邮箱
+    qd_email_processed:list 需要bcc 的邮箱,
     '''
     cus_email = cus_data['Email'].replace(' ','')
     # print(f'---------------------------------------------')
-    
+    cs_email = [cus_data['Employee_email']]
     '''
     处理邮箱
     '''
@@ -396,8 +413,8 @@ def get_email_info(cus_data):
         is_email = True
         cus_email_processed = []                        # 发送渠道不发送给客户，客户邮箱置空
     else:
-        is_email = False
-        return is_email,cus_email_processed,qd_email_processed
+        is_email = True      # 如果不填写的全部都表示Y
+        # return is_email,cus_email_processed,qd_email_processed,cs_email
 
     # 如果客户邮箱不存在，渠道邮箱存在，默认发送给渠道
     if len(cus_email_processed)==0 and len(qd_email_processed)!=0:
@@ -411,7 +428,7 @@ def get_email_info(cus_data):
     if len(cus_email_processed)==0 and len(qd_email_processed)==0:
         is_email = False
     
-    cs_email = [cus_data['CS_email']]
+    
 
     #print(f'3.cus_email:{cus_email}')
     print(is_email)

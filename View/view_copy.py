@@ -16,6 +16,8 @@ import csv
 import threading
 from pathlib import Path
 import logging
+from Controller.func import get_counter
+import random
 
 logger = logging.getLogger(f"app.{__name__}")
 
@@ -99,8 +101,8 @@ def view_form(google:GoogleClass):
     else:
         regenerate_ = regenerate_user.split(' ')
 
-    start = 3
-    num = 400
+    start = 3  # 初始值 3
+    num = 355  # 最大值355
     tracker_sheet_id = '1aWPRqw02WdZ3C9E9b_v5YEl52EzhjmE_wFNq_oQIOP0'
     client = f'CLIENT!A{str(start-1)}:AG{str(num-1)}' #'CLIENT!A2:AG200'
     summSheet =  f'SummSheet!A{str(start)}:AU{str(num)}' #'SummSheet!A3:AU201'
@@ -141,11 +143,11 @@ def view_form(google:GoogleClass):
     st.markdown("---")
    
     sheet_data = google.read_sheet_batchGet(tracker_sheet_id,range_name)
-    client_data = deal_sheet_data(sheet_data[0].get('values',''),client_header,name = 'client')
-    summSheet = deal_sheet_data(sheet_data[1].get('values',''),summSheet_header,name = 'summSheet')
+    client_data = deal_sheet_data(sheet_data[0].get('values',''),client_header,start = start,name = 'client')
+    summSheet = deal_sheet_data(sheet_data[1].get('values',''),summSheet_header,start = start,name = 'summSheet')
 
     progress_sheet_data = google.read_sheet_batchGet(mc_sheet_id,mc_pt)
-    progress_data = deal_sheet_data(progress_sheet_data[0].get('values',''),progress_header)
+    progress_data = deal_sheet_data(progress_sheet_data[0].get('values',''),progress_header,start = start,)
 
     Base_path = Path(__file__).resolve().parent.parent
     receipt_csv_path = Path.joinpath(Base_path,'doc','receipt_generate_sended.csv')
@@ -245,7 +247,8 @@ def view_form(google:GoogleClass):
                 cus_data = client_data.loc[cus_no,:]
                 #tax_data = tax_rep_fee.loc[cus_no,:]
                 template_name = 'zfd_layerfee.html'
-                file_meta,return_err1,return_err2 = template_invoice(fee_data,cus_data,line,select_year,cus_no,template_name)
+                counterstr = get_counter()
+                file_meta,return_err1,return_err2 = template_invoice(fee_data,cus_data,line,counterstr,select_year,cus_no,template_name)
                 if not file_meta:
                     continue
                 if return_err1:
@@ -895,7 +898,7 @@ def send_invoice_form(google:GoogleClass,summSheet,client_data,select_year,selec
         logger.info(f'检查是否需要更换税务代表')
         if file_meta_simple['is_tax_rep_change']:
             # 寻找文件
-            parent_parent_id = '1ZlIE34wz5958tE_IURWllkt31A2tLyHw'   # 需要更换税务代表
+            parent_parent_id = '1khiIAEXoBT7caTXIX5wJlzGDy_FwD6wM'   # 需要更换税务代表
             folder_name = file_meta_simple.get('cus_name').replace(' ','')
             filename = 'Proxy and Appointment of Tax Representative'
             # 找到客户名字的文件夹
@@ -904,13 +907,13 @@ def send_invoice_form(google:GoogleClass,summSheet,client_data,select_year,selec
             fileids = google.find_file_by_name(parent_id,True,filename)
             if fileids:
                 for fileid in fileids:
-                    send_file_content[file_id] = {}
-                    send_file_content[file_id]['file_bytes'] = google.download_file_from_drive(fileid)
+                    send_file_content[fileid] = {}
+                    send_file_content[fileid]['file_bytes'] = google.download_file_from_drive(fileid)
                     file_type = google.get_file_metadata(fileid)
                     type = file_type['mimeType'].split('/')
-                    send_file_content[file_id]['maintype']  = type[0]
-                    send_file_content[file_id]['subtype']  = type[1]
-                    send_file_content[file_id]['filename']  =file_type['name']
+                    send_file_content[fileid]['maintype']  = type[0]
+                    send_file_content[fileid]['subtype']  = type[1]
+                    send_file_content[fileid]['filename']  =file_type['name']
             else:
                 logger.info(f"❌ 客户{file_meta_simple.get('cus_name')}需要更换税务代表，未发现需签署文件，请检查，邮件暂不发送")
                 st.error(f"❌ 客户{file_meta_simple.get('cus_name')}需要更换税务代表，未发现需签署文件，请检查，邮件暂不发送")
@@ -937,13 +940,14 @@ def send_invoice_form(google:GoogleClass,summSheet,client_data,select_year,selec
                     send_failed.append(cus_no)
                 if not result:
                     logger.info(f'❌{file_meta_simple['invoiceno']}:Send Email Error：{result}')
+                    time.sleep(60)
                     # print(f'{file_meta_simple['invoiceno']}:Send Email Error')
             else:
                 logger.info(f'❌{file_meta_simple['invoiceno']}未提取到有效的邮箱地址，请及时补充')
                 st.error(f'{file_meta_simple['invoiceno']}未提取到有效的邮箱地址，请及时补充')
-
-        logger.info('睡眠20s')
-        time.sleep(20)
+        sleep_time = random.uniform(20,40)
+        logger.info(f'睡眠{sleep_time}s')
+        time.sleep(sleep_time)
     
 
         '''write invoice_no into google sheet'''

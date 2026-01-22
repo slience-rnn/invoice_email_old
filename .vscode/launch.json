@@ -6,7 +6,7 @@
     "configurations": [
 
         {
-            "name": "Lisbon_BIO_Email",
+            "name": "INV_Email",
             "type": "debugpy",
             "request": "launch",
             // "program": "${workspaceFolder}/main.py",

@@ -434,9 +434,14 @@
             <tr class="detail_fee">
                     <td class="detail_content">
                         {{ note }}
+                        {% if is_not_lisbon_lawyer %}
+                    <sup>7</sup>
+                    {% endif %}
                     </td>
                     <td></td>
-                    <td style="text-align:right"> {{ other_fee }}</td>
+                    <td style="text-align:right"> {{ other_fee }}
+                    
+                    </td>
                 
             </tr>
             <tr ><td colspan="3"></td></tr>
@@ -465,6 +470,14 @@
                 <tr ><td style="text-align:right;width:600px;">或 </td>
                     <td style="text-align:right;width:200px;font-size:13px;">应付总额(人民币)</td>
                     <td class='formatted-number-container' style="border-bottom:1px solid black;width:130px;" >{{cny_amount}}</td></tr>
+                {% endif %}
+                {%if usd_amount != 0 %}
+                <tr style="font-size:9px;"><td></td>
+                    <td style="text-align:right;width:200px;">美元兑换汇率</td>
+                    <td style="border-bottom:1px solid black; width:130px;">{{usd_er}}</td></tr>
+                <tr ><td style="text-align:right;width:600px;">或 </td>
+                    <td style="text-align:right;width:200px;font-size:13px;">应付总额(美元)</td>
+                    <td class='formatted-number-container' style="border-bottom:1px solid black;width:130px;" >{{usd_amount}}</td></tr>
                 {% endif %}
             </table>
         </div>

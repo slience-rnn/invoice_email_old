@@ -322,7 +322,7 @@ class GoogleClass:
 	
 		# contact是文件名称
 	
-	# 通过名字 寻找共享文件夹，大小写不敏感
+	# 通过名字 寻找共享文件夹，大小写不敏感,空格也不敏感
 	def find_shared_folder_id_by_name(self,filename,parent_id,mode=0):
 		query = f'''
 		mimeType = 'application/vnd.google-apps.folder'
