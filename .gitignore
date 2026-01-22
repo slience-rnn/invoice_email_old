@@ -1,3 +1,4 @@
 *.log.*
-*.log
 readme.md
+temp_file/
+.vscode/

@@ -12,23 +12,26 @@ from Model.GoogleAPI import *
 data: 
 '''
 
-def template_invoice(fee_data,cus_data,no,year,cus_no,template_name,header_name=['TOTAL AMOUNT €','TOTAL AMOUNT CNY$','TOTAL AMOUNT HKD$']):
+def template_invoice(fee_data,cus_data,no,counter,year,cus_no,template_name,header_name=['TOTAL AMOUNT €','TOTAL AMOUNT CNY$','TOTAL AMOUNT HKD$']):
     # template_name = IRS_INVOICE.html / zfd_layerfee.html
     # 费用总额
     EUR_FIELD_NAME= header_name[0]
     CNY_FIELD_NAME = header_name[1]
     HKD_FIELD_NAME = header_name[2]
+    
+
+    is_not_lisbon_lawyer = False
 
     return_file = None
     return_error_1 = ''
     return_error_2 = ''
-    if fee_data[EUR_FIELD_NAME]!='':
-        eur_amount = current(fee_data[EUR_FIELD_NAME])
-    else:
-        eur_amount = 0
+    # if fee_data[EUR_FIELD_NAME]!='':
+    #     eur_amount = current(fee_data[EUR_FIELD_NAME])
+    # else:
+    #     eur_amount = 0
 
-    if eur_amount == 0:
-        return return_file,return_error_1,return_error_2
+    # if eur_amount == 0:
+    #     return return_file,return_error_1,return_error_2
     
     # if 
     # print(f'total amount {eur_amount}')
@@ -68,6 +71,10 @@ def template_invoice(fee_data,cus_data,no,year,cus_no,template_name,header_name=
     if tax_rep_fee_data in ['',' ','?'] and fee_data.get('TAX REP FEE','') !='':      # 
         tax_rep_fee = current(fee_data['TAX REP FEE'])
         tax_data = fee_data['Total payment dys'].replace(',','')
+
+        if float(tax_rep_fee) < 500:
+            tax_rep_fee = 0
+
     else:
         tax_rep_fee = 0
     
@@ -113,26 +120,44 @@ def template_invoice(fee_data,cus_data,no,year,cus_no,template_name,header_name=
     cus_project_address = cus_data['Project Address']
     
 
-    if fee_data[CNY_FIELD_NAME] not in [' ','']:
-        #print(fee_data['TOTAL AMOUNT CNY$'])
-        cny_amount = current(fee_data[CNY_FIELD_NAME],1)
-        rmb_er = round(cny_amount/eur_amount,4)
-    else:
-        cny_amount = 0
-        rmb_er = 0
+    # if fee_data[CNY_FIELD_NAME] not in [' ','']:
+    #     #print(fee_data['TOTAL AMOUNT CNY$'])
+    #     cny_amount = current(fee_data[CNY_FIELD_NAME],1)
+    #     rmb_er = round(cny_amount/eur_amount,4)
+    # else:
+    #     cny_amount = 0
+    #     rmb_er = 0
+    raw_eur_amount = tax_rep_fee + condo_fee + qbe_fee + imi_fee + irs_fee + other_fee
+    raw_rmb_er =  8.204400
+    cny_amount = round(raw_rmb_er * raw_eur_amount,2)
+    rmb_er = round(raw_rmb_er,4)
+
+    raw_hkd_er = 9.13970
+    hkd_amount = round(raw_hkd_er * raw_eur_amount,2)
+    hk_er = round(raw_hkd_er,4)
+
+    raw_usd_er = 1.17474000
+    usd_amount = round(raw_usd_er * raw_eur_amount,2)
+    usd_er = round(raw_usd_er,4)
+
+    eur_amount = round(raw_eur_amount,2)
+
     
 
-    if fee_data[HKD_FIELD_NAME] not in [' ','']:
-        hkd_amount = current(fee_data[HKD_FIELD_NAME],1)
-        hk_er = round(hkd_amount/eur_amount,4)
-    else:
-        hkd_amount = 0
-        hk_er = 0
+    
+
+    # if fee_data[HKD_FIELD_NAME] not in [' ','']:
+    #     hkd_amount = current(fee_data[HKD_FIELD_NAME],1)
+    #     hk_er = round(hkd_amount/eur_amount,4)
+    # else:
+    #     hkd_amount = 0
+    #     hk_er = 0
     # 备注
     note = fee_data['INVOICE ADD-ON REMARKS\n[支付单增加备注]']
     # 税费支付开始日期
     
-
+    if 'Non-Lisbon Biometrics Service Surcharge'.lower().replace(' ','') in note.lower().replace(' ',''):
+        is_not_lisbon_lawyer = True
 
 
     today = datetime.now()
@@ -142,7 +167,7 @@ def template_invoice(fee_data,cus_data,no,year,cus_no,template_name,header_name=
     invoice_name = ' '.join([last_name,first_name])
     invoice_no_name = (last_name[0] + first_name[:2]).upper()
     print(invoice_no_name,data_num,no)
-    invoice_no = ''.join(['PT',invoice_no_name,data_num,'-',num_to_3(no)])
+    invoice_no = ''.join(['PT',invoice_no_name,data_num,'-',num_to_3(counter)])
 
     return_file = {
         'cus_name': invoice_name,
@@ -217,9 +242,12 @@ def template_invoice(fee_data,cus_data,no,year,cus_no,template_name,header_name=
         'eur_amount':eur_amount,
         'hkd_amount':hkd_amount,
         'cny_amount':cny_amount,
+        'usd_amount':usd_amount,
         'rmb_er':rmb_er,
         'hk_er':hk_er,
+        'usd_er':usd_er,
         'note':note,
+        'is_not_lisbon_lawyer':is_not_lisbon_lawyer
     }
     
     env = Environment(loader = FileSystemLoader('./View'))

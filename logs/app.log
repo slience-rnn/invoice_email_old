@@ -1,0 +1,25 @@
+2026-01-22 09:41:38 INFO [app:13] log应用启动成功
+2026-01-22 09:42:15 INFO [app:13] log应用启动成功
+2026-01-22 09:42:29 INFO [app:13] log应用启动成功
+2026-01-22 09:42:43 INFO [app.View.view_copy:222] 开始生成客户的支付单Invoice
+2026-01-22 09:42:43 INFO [app.View.view_copy:244] 📌 开始准备生成客户 2022EV2 的支付单Invoice
+2026-01-22 09:42:46 INFO [app.View.view_copy:264] invoice 已经准备就绪
+2026-01-22 09:42:46 INFO [app.View.view_copy:273] 向Google Drive中加载文件
+2026-01-22 09:42:53 INFO [app.View.view_copy:291] 向Google Sheet中写入完成,PTLYU20260122-000
+2026-01-22 09:42:53 INFO [app.View.view_copy:244] 📌 开始准备生成客户 2023EV3 的支付单Invoice
+2026-01-22 09:42:55 INFO [app.View.view_copy:264] invoice 已经准备就绪
+2026-01-22 09:42:55 INFO [app.View.view_copy:273] 向Google Drive中加载文件
+2026-01-22 09:42:58 INFO [app.View.view_copy:291] 向Google Sheet中写入完成,PTGYI20260122-001
+2026-01-22 09:42:58 INFO [app.View.view_copy:244] 📌 开始准备生成客户 2023EV6 的支付单Invoice
+2026-01-22 09:43:01 INFO [app.View.view_copy:264] invoice 已经准备就绪
+2026-01-22 09:43:01 INFO [app.View.view_copy:273] 向Google Drive中加载文件
+2026-01-22 09:43:06 INFO [app.View.view_copy:291] 向Google Sheet中写入完成,PTYQI20260122-002
+2026-01-22 09:45:22 INFO [app.View.view_copy:303] 🎈 Done
+2026-01-22 09:51:47 INFO [app:13] log应用启动成功
+2026-01-22 09:51:53 INFO [app:13] log应用启动成功
+2026-01-22 09:52:19 INFO [app:13] log应用启动成功
+2026-01-22 09:52:36 INFO [app.View.view_copy:898] 检查是否需要更换税务代表
+2026-01-22 09:52:36 INFO [app.View.view_copy:923] 准备发送Email，True
+2026-01-22 09:52:36 INFO [app.View.view_copy:935] 开始发送Email
+2026-01-22 09:52:41 INFO [app.View.view_copy:938] 2019PB2_send Email result=Success
+2026-01-22 09:52:41 INFO [app.View.view_copy:949] 睡眠28.492624660576308s
