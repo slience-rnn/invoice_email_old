@@ -1,4 +1,4 @@
 *.log.*
 readme.md
-temp_file\
-.vscode\
+temp_file/
+.vscode/
